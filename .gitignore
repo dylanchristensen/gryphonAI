@@ -1,3 +1,7 @@
+# Vim
+*.swp
+*.swo
+
 # Python
 __pycache__/
 *.pyc
@@ -36,6 +40,6 @@ Desktop.ini
 .DS_Store
 
 # Project specific (from original gryphon)
-source code/doc/doxygen/html
+src/doc/doxygen/html
 _test_*
 z*

@@ -4,10 +4,7 @@ from unittest.mock import MagicMock, patch
 import sys
 import os
 
-# Add src/python to path
-sys.path.append("c:/2026/Spring/MP+AI/src/python")
-
-from llm_interface import LLMInterface
+from gryphon_ai.llm_interface import LLMInterface
 
 class MockSettingsManager:
     def __init__(self):

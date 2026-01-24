@@ -1,0 +1,1 @@
+This dictionary was copied from ~/.local/lib/python3.10/site-packages/spellchecker/resources packaged with pyspellchecker v0.7.3, MIT license.  This package was updated via `pip3 install --upgrade pyspellchecker`.

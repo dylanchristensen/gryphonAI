@@ -95,24 +95,35 @@ class PromptBuilder:
             "- Patterns that might indicate emergent system-level behaviors"
         )
         
-        # Serialize trace data, truncating if too large
-        trace_str = json.dumps(trace_data, indent=2)
-        max_length = 10000
+        # Get trace text if available (preferred), otherwise serialize JSON
+        if isinstance(trace_data, dict) and 'trace_text' in trace_data:
+            trace_str = trace_data['trace_text']
+        else:
+            trace_str = json.dumps(trace_data, indent=2)
         
+        max_length = 10000
         if len(trace_str) > max_length:
             trace_str = trace_str[:max_length] + "\n... (truncated for length)"
         
         user_prompt = (
-            f"Here is the trace data (JSON) showing the actual events that occurred when "
-            f"running an MP model:\n\n{trace_str}\n\n"
-            "Analyze these actual event traces to identify potential emergent behaviors. "
-            "Focus on what the traces reveal about system behavior, not on what the code "
-            "says. For each finding:\n"
-            "- Describe what you observed in the actual trace events\n"
-            "- Explain why this might indicate emergent behavior (behavior arising from "
-            "interactions, not explicit code)\n"
-            "- Provide a reasoned justification based on the trace data\n"
-            "- Discuss what this reveals about the system being modeled"
+            f"Here is the trace data showing the SET OF EVENT TRACES generated when "
+            f"running an MP model. This file contains MULTIPLE traces (the 'traces' array):\n\n{trace_str}\n\n"
+            "Analyze the FULL SET OF TRACES to identify potential emergent behaviors. "
+            "Look for patterns and behaviors that emerge ACROSS the trace set.\n\n"
+            "Focus on:\n"
+            "1. **Patterns across traces**: What event sequences or behaviors appear in "
+            "multiple traces? Which traces show similar patterns?\n"
+            "2. **Variations between traces**: What interesting differences exist between "
+            "traces? What causes these variations?\n"
+            "3. **System-level properties**: What behaviors emerge from the full set of "
+            "traces that aren't visible in individual traces?\n"
+            "4. **Component interactions**: How do components interact across different "
+            "traces? What interactions produce emergent outcomes?\n\n"
+            "For each finding, provide:\n"
+            "- Which specific traces show this behavior (trace indices)\n"
+            "- The concrete event sequences observed\n"
+            "- Why this indicates emergent behavior (arising from interactions, not explicit code)\n"
+            "- How this pattern appears across the trace set (frequency, variations)"
         )
         
         return system_prompt, user_prompt

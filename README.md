@@ -1,66 +1,91 @@
-# GryphonAI
+# Gryphon AI
 
-## Overview
-GryphonAI extends the [MP Gryphon](https://gitlab.nps.edu/monterey-phoenix/user-interfaces/gryphon) model checker by integrating Large Language Models (LLMs). This integration assists in discerning potential emergent behaviors within Monterey Phoenix (MP) models and provides reasonable justifications for these findings. Additionally, it helps in fleshing out models with real-world implementations, assumptions, and abstractions.
+Enhanced version of [Gryphon](https://gitlab.nps.edu/monterey-phoenix/user-interfaces/gryphon) with LLM-powered AI capabilities built-in.
 
-### About MP Gryphon
-Gryphon provides a Python GUI user interface for accessing the Monterey Phoenix trace-generator. Gryphon is available for Windows, Mac, and Linux. On Linux systems, Gryphon runs stand-alone without requiring access to the Gryphon server.
+## Quick Start
 
-* [Gryphon Wiki](https://gitlab.nps.edu/monterey-phoenix/user-interfaces/gryphon/-/wikis/home)
-* [Installing MP Gryphon](https://gitlab.nps.edu/monterey-phoenix/user-interfaces/gryphon/-/wikis/Installing-MP-Gryphon)
+1. **Clone this repository:**
+   ```bash
+   git clone <your-repo-url>
+   cd gryphonAI
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Configure your API key:**
+   
+   Copy `config.json.example` to `config.json` and add your API key:
+   ```bash
+   cp config.json.example config.json
+   # Edit config.json with your API key
+   ```
+   
+   Or set environment variables:
+   ```bash
+   export LLM_API_KEY="your-api-key-here"
+   export LLM_MODEL="openai/gpt-oss-120b"
+   export LLM_BASE_URL="https://openrouter.ai/api/v1"
+   ```
+
+4. **Run:**
+   ```bash
+   python run_gryphon.py
+   ```
+   
+   Or on Windows:
+   ```bash
+   run_gryphon.bat
+   ```
+
+That's it! Gryphon will start with AI features enabled.
 
 ## Features
-- **Emergent Behavior Analysis**: Hooks into the MP generation process to identify and explain unexpected or "weird" machine behaviors using LLMs.
-- **Model Refinement**: Assists in refining MP codes by suggesting improvements, real-world constraints, and abstractions.
-- **Model Management**: Fetch and select available LLM models for analysis.
 
-## Project Structure
-- `src/`: Source code for the Gryphon extension and MP files.
-  - `python/llm_interface.py`: Core interface for communicating with LLM providers.
-- `test_llm.py`: Unit tests for the LLM interface.
-- `install_mp.bash`: Script to install the base MP Gryphon dependencies.
-
-## Installation
-
-### Prerequisites
-- Python 3.x
-- Access to an LLM provider API (e.g., OpenAI, local LLM).
-
-### Setup
-1.  **Install MP Gryphon Dependencies**:
-    Run the provided installation script to set up the environment.
-    ```bash
-    ./src/install_mp.bash
-    ```
-
-2.  **Configuration**:
-    Ensure your LLM API keys and settings are configured. (Refer to `src/python/llm_interface.py` or your settings manager configuration).
+- **Refine Models**: Get AI suggestions to improve MP models, making them more realistic and complete
+- **Analyze Traces**: Identify potential emergent behaviors in generated event traces
 
 ## Usage
 
-### LLM Interface
-The `LLMInterface` class provides the main entry point for AI interactions.
+Once running, use the **AI** menu in Gryphon:
+- **AI > Refine Model with AI** - Get suggestions for your MP code
+- **AI > Analyze Trace with AI** - Analyze generated traces for emergent behavior
 
-```python
-import sys
-# Ensure src/python is in your path
-sys.path.append("src/python")
+## Project Structure
 
-from llm_interface import LLMInterface
-# Initialize with your settings manager
-llm = LLMInterface(settings_manager)
+- `gryphon_source/`: Gryphon source with AI integration already applied
+- `gryphon_ai/`: AI extension code
+- `preloaded-examples/`: Example MP models and snippets (cloned from Gryphon's repository)
+- `config.json`: Your LLM configuration (create from `config.json.example`)
 
-# Refine a model
-suggestion = llm.refine_model("ROOT A: a;")
-print(suggestion["content"])
+## Configuration
 
-# Analyze emergent behavior
-analysis = llm.analyze_emergent_behavior({"trace": [...]})
-print(analysis["content"])
-```
+The extension looks for `config.json` in:
+- Current directory
+- `~/.gryphon_ai/config.json`
+- Environment variables (override file settings)
 
-## Testing
-Run the included unit tests to verify the LLM integration:
-```bash
-python test_llm.py
-```
+## Requirements
+
+- Python 3.8+
+- PySide6 (installed via requirements.txt)
+
+## How It Works
+
+Gryphon is included with AI integration already applied. The `gryphon_ai` plugin automatically:
+- Integrates with Gryphon's GUI manager
+- Adds the AI menu
+- Captures trace data automatically
+
+All done automatically - just run it!
+
+## License
+
+[Include Gryphon's license - check gryphon_source/COPYING.md]
+
+## Credits
+
+- Based on [Gryphon](https://gitlab.nps.edu/monterey-phoenix/user-interfaces/gryphon) by Monterey Phoenix
+- AI extension developed by [Your Name/Team]

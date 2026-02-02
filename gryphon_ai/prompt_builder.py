@@ -27,12 +27,15 @@ class PromptBuilder:
         """
         system_prompt = (
             "You are an expert in Monterey Phoenix (MP) modeling. "
-            "Your task is to help the user improve their MP model by making it more "
-            "realistic, complete, and robust. Focus on:\n"
-            "- Adding realistic states and interactions between components\n"
-            "- Ensuring the model captures system-of-systems behavior accurately\n"
-            "- Identifying missing events or edge cases\n"
-            "- Suggesting improvements to make the model more complete"
+            "Your task is to help the user refine their MP model to better represent "
+            "the system as they understand it. Important principles:\n"
+            "- The model should represent the system as understood, not add defensive "
+            "programming or edge case handling\n"
+            "- Focus on making the model more accurate to the intended system behavior\n"
+            "- Suggest realistic states and interactions that better capture the "
+            "system-of-systems behavior\n"
+            "- Do NOT suggest adding edge cases or error handling - the model should "
+            "represent the system as designed, and traces will reveal what actually happens"
         )
         
         user_prompt = f"Here is the current MP code:\n\n{current_code}\n"
@@ -41,9 +44,11 @@ class PromptBuilder:
             user_prompt += f"\nFocus your suggestions on this selected part:\n{selection}\n"
         
         user_prompt += (
-            "\nPlease provide specific MP code suggestions to make this model more "
-            "realistic and complete. Explain your changes briefly, focusing on how "
-            "they improve the model's representation of system behavior."
+            "\nPlease provide specific MP code suggestions to better represent the system "
+            "as understood. Focus on making the model more accurate to the intended system "
+            "behavior, not on adding edge cases or error handling. Explain your changes "
+            "briefly, focusing on how they improve the model's representation of the "
+            "system as designed."
         )
         
         return system_prompt, user_prompt
@@ -75,15 +80,19 @@ class PromptBuilder:
         """Build prompt for exploratory trace analysis."""
         system_prompt = (
             "You are an expert in Monterey Phoenix (MP) modeling and trace analysis. "
-            "Your task is to analyze event traces generated from MP models to identify "
-            "potential emergent behaviors, unexpected interactions, or interesting patterns.\n\n"
+            "Your task is to analyze the actual event traces generated from running an MP "
+            "model to identify potential emergent behaviors.\n\n"
+            "Important: You are analyzing what actually happened in the traces, not what "
+            "the code says should happen. The model represents the system as understood, "
+            "and the traces reveal what actually occurs when the system runs.\n\n"
             "Emergent behavior in system-of-systems contexts refers to behaviors that arise "
             "from the interactions between components that are not explicitly defined in "
             "individual component specifications. Look for:\n"
-            "- Unexpected event sequences or patterns\n"
-            "- Interactions between components that produce novel behaviors\n"
-            "- Potential safety or reliability concerns\n"
-            "- Interesting state transitions or event dependencies"
+            "- Event sequences or patterns that emerge from component interactions\n"
+            "- Behaviors that arise from the system dynamics, not from explicit code\n"
+            "- Interesting state transitions or event dependencies that reveal system "
+            "properties\n"
+            "- Patterns that might indicate emergent system-level behaviors"
         )
         
         # Serialize trace data, truncating if too large
@@ -94,13 +103,16 @@ class PromptBuilder:
             trace_str = trace_str[:max_length] + "\n... (truncated for length)"
         
         user_prompt = (
-            f"Here is the trace data (JSON) generated from an MP model:\n\n{trace_str}\n\n"
-            "Analyze this trace and identify potential emergent behaviors, unexpected "
-            "interactions, or interesting patterns. For each finding:\n"
-            "- Describe what you observed\n"
-            "- Explain why it might indicate emergent behavior\n"
-            "- Provide a reasoned justification\n"
-            "- Suggest what this might mean for the system being modeled"
+            f"Here is the trace data (JSON) showing the actual events that occurred when "
+            f"running an MP model:\n\n{trace_str}\n\n"
+            "Analyze these actual event traces to identify potential emergent behaviors. "
+            "Focus on what the traces reveal about system behavior, not on what the code "
+            "says. For each finding:\n"
+            "- Describe what you observed in the actual trace events\n"
+            "- Explain why this might indicate emergent behavior (behavior arising from "
+            "interactions, not explicit code)\n"
+            "- Provide a reasoned justification based on the trace data\n"
+            "- Discuss what this reveals about the system being modeled"
         )
         
         return system_prompt, user_prompt

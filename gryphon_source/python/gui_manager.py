@@ -619,6 +619,9 @@ class GUIManager(QObject):
             ai_menu = menubar.addMenu('&AI')
             ai_menu.addAction(self.gryphon_ai_manager.action_refine_model)
             ai_menu.addAction(self.gryphon_ai_manager.action_analyze_trace)
+            ai_menu.addSeparator()
+            ai_menu.addAction(self.gryphon_ai_manager.action_ai_chat)
+            ai_menu.addAction(self.gryphon_ai_manager.action_open_traces)
 
         # menu | help
         help_menu = menubar.addMenu('&Help')
@@ -929,7 +932,12 @@ class GUIManager(QObject):
 
             # Capture trace data for AI
             if self.gryphon_ai_manager:
-                self.gryphon_ai_manager.set_trace_data(tg_data)
+                self.gryphon_ai_manager.set_trace_data(
+                    tg_data,
+                    schema_name=self._proposed_schema_name,
+                    mp_code=self._proposed_mp_code,
+                    scope=self._proposed_scope
+                )
 
             # accept graphs
             gry_graphs = tg_to_gry_graphs(tg_data)

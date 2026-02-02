@@ -4,6 +4,10 @@ Main orchestrator for Gryphon AI extension.
 Coordinates UI, services, and data flow using Qt signals/slots for async operations.
 """
 from typing import Optional
+from pathlib import Path
+from datetime import datetime
+import json
+import shutil
 from PySide6.QtCore import QObject, Slot
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMessageBox
@@ -12,7 +16,7 @@ from gryphon_ai.config_manager import ConfigManager
 from gryphon_ai.llm_client import LLMClient
 from gryphon_ai.llm_service import LLMService
 from gryphon_ai.worker_thread import LLMWorkerThread
-from gryphon_ai.ui_components import ProgressDialog, ResultDialog
+from gryphon_ai.ui_components import ProgressDialog, ResultDialog, AIChatDialog
 from gryphon_ai.exceptions import (
     LLMConfigurationError,
     LLMAPIError,
@@ -82,6 +86,12 @@ class GryphonAIManager(QObject):
         
         # Store the last compile result for analysis
         self.last_tg_data = None
+        self.last_trace_text = None
+        
+        # Set up trace history directory
+        trace_history_dir = Path.home() / ".gryphon_ai" / "traces"
+        trace_history_dir.mkdir(parents=True, exist_ok=True)
+        self.trace_history_dir = trace_history_dir
         
         # Create menu actions
         self.action_refine_model = QAction("Refine Model with AI", self.gui_manager.w)
@@ -90,18 +100,169 @@ class GryphonAIManager(QObject):
         self.action_analyze_trace = QAction("Analyze Trace with AI", self.gui_manager.w)
         self.action_analyze_trace.triggered.connect(self.analyze_trace)
         
+        self.action_ai_chat = QAction("AI Chat...", self.gui_manager.w)
+        self.action_ai_chat.triggered.connect(self.open_ai_chat)
+        
+        self.action_open_traces = QAction("Open Trace Folder", self.gui_manager.w)
+        self.action_open_traces.triggered.connect(self.open_trace_folder)
+        
         # Progress dialog (created on demand)
         self.progress_dialog = None
+        
+        # AI chat dialog (persistent)
+        self.ai_chat_dialog = None
     
-    def set_trace_data(self, tg_data):
+    def set_trace_data(self, tg_data, schema_name=None, mp_code=None, scope=None):
         """
         Called when a new trace is generated.
         
+        Saves the trace to history with metadata for later analysis.
+        
         Args:
             tg_data: Trace generator data dictionary
+            schema_name: Schema name from MP code
+            mp_code: The MP code text that generated this trace
+            scope: The scope value used
         """
         self.last_tg_data = tg_data
+        
+        # Try to get metadata from gui_manager if not provided
+        if schema_name is None:
+            try:
+                schema_name = getattr(self.gui_manager, '_proposed_schema_name', None)
+            except:
+                pass
+        if mp_code is None:
+            try:
+                mp_code = getattr(self.gui_manager, '_proposed_mp_code', None)
+            except:
+                pass
+        if scope is None:
+            try:
+                scope = getattr(self.gui_manager, '_proposed_scope', None)
+            except:
+                pass
+        
+        # Capture and save trace
+        try:
+            self._save_trace_to_history(tg_data, schema_name, mp_code, scope)
+        except Exception as e:
+            log(f"Gryphon AI: Warning - could not save trace to history: {e}")
+        
         log("Gryphon AI: Trace data updated")
+    
+    def _save_trace_to_history(self, tg_data, schema_name, mp_code, scope):
+        """
+        Save trace to history directory with metadata.
+        
+        Args:
+            tg_data: Trace generator data dictionary
+            schema_name: Schema name
+            mp_code: MP code text
+            scope: Scope value
+        """
+        # Read the raw trace text file
+        try:
+            from paths_gryphon import TRACE_GENERATED_OUTFILE_TG
+            trace_file_path = Path(TRACE_GENERATED_OUTFILE_TG)
+            
+            if trace_file_path.exists():
+                with open(trace_file_path, 'r', encoding='utf-8') as f:
+                    trace_text = f.read()
+                self.last_trace_text = trace_text
+            else:
+                # Fallback: serialize JSON to text
+                trace_text = json.dumps(tg_data, indent=4, sort_keys=True)
+                self.last_trace_text = trace_text
+        except Exception as e:
+            # Fallback: serialize JSON to text
+            trace_text = json.dumps(tg_data, indent=4, sort_keys=True)
+            self.last_trace_text = trace_text
+        
+        # Get number of traces
+        num_traces = len(tg_data.get("traces", [])) if tg_data else 0
+        
+        # Create safe schema name for directory (sanitize)
+        if schema_name:
+            safe_schema_name = "".join(c for c in schema_name if c.isalnum() or c in ('_', '-'))
+            if not safe_schema_name:
+                safe_schema_name = "unknown"
+        else:
+            safe_schema_name = "unknown"
+        
+        # Create timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        
+        # Create directory structure: traces/{schema_name}/{timestamp}/
+        trace_dir = self.trace_history_dir / safe_schema_name / timestamp
+        trace_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Save trace file (.tg)
+        trace_file = trace_dir / "trace.tg"
+        with open(trace_file, 'w', encoding='utf-8') as f:
+            f.write(trace_text)
+        
+        # Save .gry file (converted format with visualization data)
+        try:
+            from paths_gryphon import TRACE_GENERATED_OUTFILE_GRY
+            gry_file_path = Path(TRACE_GENERATED_OUTFILE_GRY)
+            
+            if gry_file_path.exists():
+                with open(gry_file_path, 'r', encoding='utf-8') as f:
+                    gry_text = f.read()
+                
+                gry_file = trace_dir / "trace.gry"
+                with open(gry_file, 'w', encoding='utf-8') as f:
+                    f.write(gry_text)
+            else:
+                # Fallback: try to generate .gry from tg_data
+                try:
+                    from tg_to_gry import tg_to_gry_graphs
+                    from settings import settings
+                    
+                    gry_graphs = tg_to_gry_graphs(tg_data)
+                    selected_graph_index = 1 if num_traces > 0 else 0
+                    
+                    gry_data = {
+                        "graphs": gry_graphs,
+                        "mp_code_current": mp_code or "",
+                        "mp_code_runtime": mp_code or "",
+                        "scope": scope,
+                        "selected_graph_index": selected_graph_index,
+                        "settings": settings
+                    }
+                    
+                    gry_file = trace_dir / "trace.gry"
+                    with open(gry_file, 'w', encoding='utf-8') as f:
+                        json.dump(gry_data, f, indent=4, sort_keys=True)
+                except Exception as e:
+                    log(f"Gryphon AI: Could not generate .gry file: {e}")
+        except Exception as e:
+            log(f"Gryphon AI: Could not save .gry file: {e}")
+        
+        # Save MP code if available
+        if mp_code:
+            model_file = trace_dir / "model.mp"
+            with open(model_file, 'w', encoding='utf-8') as f:
+                f.write(mp_code)
+        
+        # Save metadata
+        metadata = {
+            "schema": schema_name or "unknown",
+            "scope": scope,
+            "timestamp": timestamp,
+            "num_traces": num_traces,
+            "has_global": "GLOBAL" in tg_data if tg_data else False
+        }
+        metadata_file = trace_dir / "metadata.json"
+        with open(metadata_file, 'w', encoding='utf-8') as f:
+            json.dump(metadata, f, indent=2)
+        
+        log(f"Gryphon AI: Saved trace to {trace_dir}")
+        
+        # Optionally open trace folder (can be made configurable)
+        # Uncomment the next line if you want it to auto-open:
+        # self._maybe_open_trace_folder()
     
     def _check_llm_available(self) -> bool:
         """Check if LLM service is available."""
@@ -204,7 +365,10 @@ class GryphonAIManager(QObject):
         self.worker_thread.signal_error.connect(self._on_error)
         self.worker_thread.signal_progress.connect(self._on_progress)
         
-        self.worker_thread.analyze_trace(self.last_tg_data)
+        self.worker_thread.analyze_trace(
+            self.last_tg_data,
+            trace_text=getattr(self, 'last_trace_text', None)
+        )
     
     def _on_refine_complete(self, result: dict):
         """Handle completion of model refinement."""
@@ -267,9 +431,42 @@ class GryphonAIManager(QObject):
             title: Dialog title
             content: Content to display
         """
+        # If chat dialog is open, show result there too
+        if self.ai_chat_dialog and self.ai_chat_dialog.isVisible():
+            self.ai_chat_dialog.show_result(title, content)
+        
+        # Also show in result dialog
         dialog = ResultDialog(
             self.gui_manager.w,
             title=title,
             content=content
         )
         dialog.exec()
+    
+    def open_ai_chat(self):
+        """Open or show the AI chat dialog."""
+        if not self.ai_chat_dialog:
+            self.ai_chat_dialog = AIChatDialog(self.gui_manager.w, self)
+        self.ai_chat_dialog.show()
+        self.ai_chat_dialog.raise_()
+        self.ai_chat_dialog.activateWindow()
+    
+    def open_trace_folder(self):
+        """Open the trace history folder in file explorer."""
+        import subprocess
+        import platform
+        
+        if self.trace_history_dir.exists():
+            if platform.system() == "Windows":
+                subprocess.Popen(f'explorer "{self.trace_history_dir}"')
+            elif platform.system() == "Darwin":  # macOS
+                subprocess.Popen(["open", str(self.trace_history_dir)])
+            else:  # Linux
+                subprocess.Popen(["xdg-open", str(self.trace_history_dir)])
+            log(f"Gryphon AI: Opened trace folder: {self.trace_history_dir}")
+        else:
+            QMessageBox.information(
+                self.gui_manager.w,
+                "No Traces",
+                "Trace folder doesn't exist yet. Run some models first to generate traces!"
+            )

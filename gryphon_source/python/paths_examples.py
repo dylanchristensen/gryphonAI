@@ -22,11 +22,25 @@ def _set_examples_paths():
                 examples_root = json.load(f)
         except Exception as e:
             print("Error reading examples pathfile: %s" % str(e))
-            examples_root = normpath(join(dirname(__file__),
-                                      "..", "..", "preloaded-examples"))
+            examples_root = None
     else:
-        examples_root = normpath(join(dirname(__file__),
-                                      "..", "..", "preloaded-examples"))
+        examples_root = None
+    
+    # If no path set yet, try to find examples relative to this file
+    # First try in same directory as this file (gryphon_source/python/preloaded-examples)
+    if not examples_root or not exists(examples_root):
+        local_examples = normpath(join(dirname(__file__), "preloaded-examples"))
+        if exists(local_examples) and exists(join(local_examples, "models")):
+            examples_root = path.abspath(local_examples)
+        else:
+            # Fallback to project root (../preloaded-examples)
+            project_root_examples = normpath(join(dirname(__file__),
+                                                  "..", "..", "preloaded-examples"))
+            if exists(project_root_examples) and exists(join(project_root_examples, "models")):
+                examples_root = path.abspath(project_root_examples)
+            else:
+                # Last resort: use the local path even if it doesn't exist yet
+                examples_root = path.abspath(local_examples)
 
     # set global values into examples_paths
     examples_paths["examples_root"] = examples_root

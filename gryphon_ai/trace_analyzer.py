@@ -59,18 +59,24 @@ class TraceAnalyzer(ABC):
         return traces[index]
     
     @staticmethod
-    def prepare_trace_for_analysis(trace: Any, max_size: int = 10000) -> str:
+    def prepare_trace_for_analysis(trace: Any, trace_text: Optional[str] = None, max_size: int = 10000) -> str:
         """
-        Prepare trace data for analysis by serializing and truncating if needed.
+        Prepare trace data for analysis by using raw text if available.
         
         Args:
             trace: Trace data (any JSON-serializable type)
+            trace_text: Optional raw text representation (preferred for LLM - more readable)
             max_size: Maximum size in characters before truncation
             
         Returns:
-            JSON string representation of trace
+            String representation of trace (prefers raw text over JSON)
         """
-        trace_str = json.dumps(trace, indent=2)
+        # Prefer raw text if available (more readable for LLM)
+        if trace_text:
+            trace_str = trace_text
+        else:
+            trace_str = json.dumps(trace, indent=2)
+        
         if len(trace_str) > max_size:
             trace_str = trace_str[:max_size] + "\n... (truncated)"
         return trace_str
@@ -92,22 +98,27 @@ class ExploratoryTraceAnalyzer(TraceAnalyzer):
         """
         self.trace_index = trace_index
     
-    def analyze(self, trace_data: Dict[str, Any]) -> Dict[str, Any]:
+    def analyze(self, trace_data: Dict[str, Any], trace_text: Optional[str] = None) -> Dict[str, Any]:
         """
         Analyze trace data for exploratory purposes.
         
         Args:
             trace_data: Full trace data dictionary
+            trace_text: Optional raw text representation of trace
             
         Returns:
             Dictionary with:
                 - 'trace': The selected trace
                 - 'trace_index': Index of analyzed trace
-                - 'prepared_trace': Serialized trace for LLM
+                - 'prepared_trace': Serialized trace for LLM (prefers raw text)
         """
         try:
             selected_trace = self.select_trace(trace_data, self.trace_index)
-            prepared_trace = self.prepare_trace_for_analysis(selected_trace)
+            # Use raw text if available, otherwise serialize the full trace_data
+            if trace_text:
+                prepared_trace = self.prepare_trace_for_analysis(trace_data, trace_text=trace_text)
+            else:
+                prepared_trace = self.prepare_trace_for_analysis(trace_data)
             
             return {
                 'trace': selected_trace,

@@ -62,6 +62,7 @@ class LLMService:
     def analyze_trace(
         self,
         trace_data: Dict[str, Any],
+        trace_text: Optional[str] = None,
         analysis_type: str = "exploratory"
     ) -> Dict[str, Any]:
         """
@@ -69,6 +70,7 @@ class LLMService:
         
         Args:
             trace_data: The trace data to analyze
+            trace_text: Optional raw text representation (preferred for LLM)
             analysis_type: Type of analysis ('exploratory' or 'methodology')
             
         Returns:
@@ -78,8 +80,21 @@ class LLMService:
             LLMAPIError: If the API call fails
         """
         try:
+            # Prepare trace data with text if available
+            from gryphon_ai.trace_analyzer import TraceAnalyzer
+            if trace_text:
+                prepared_trace = TraceAnalyzer.prepare_trace_for_analysis(trace_data, trace_text=trace_text)
+            else:
+                prepared_trace = TraceAnalyzer.prepare_trace_for_analysis(trace_data)
+            
+            # Pass both the prepared trace text and original data
+            trace_data_for_prompt = {
+                'trace_text': prepared_trace,
+                'trace_data': trace_data
+            }
+            
             system_prompt, user_prompt = self.prompt_builder.build_trace_analysis_prompt(
-                trace_data, analysis_type
+                trace_data_for_prompt, analysis_type
             )
             
             messages = [

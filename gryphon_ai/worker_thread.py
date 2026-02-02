@@ -53,17 +53,19 @@ class LLMWorkerThread(QThread):
         }
         self.start()
     
-    def analyze_trace(self, trace_data: Dict[str, Any], trace_index: Optional[int] = None):
+    def analyze_trace(self, trace_data: Dict[str, Any], trace_text: Optional[str] = None, trace_index: Optional[int] = None):
         """
         Queue a trace analysis operation.
         
         Args:
             trace_data: The trace data to analyze
+            trace_text: Optional raw text representation (preferred for LLM)
             trace_index: Optional index of trace to analyze
         """
         self.operation = "analyze"
         self.operation_args = {
             "trace_data": trace_data,
+            "trace_text": trace_text,
             "trace_index": trace_index
         }
         self.start()
@@ -117,18 +119,20 @@ class LLMWorkerThread(QThread):
         
         self.signal_progress.emit("Preparing trace data...")
         trace_data = self.operation_args["trace_data"]
+        trace_text = self.operation_args.get("trace_text")
         trace_index = self.operation_args.get("trace_index")
         
         # Use trace analyzer to prepare the trace
         analyzer = ExploratoryTraceAnalyzer(trace_index=trace_index)
-        analysis_data = analyzer.analyze(trace_data)
+        analysis_data = analyzer.analyze(trace_data, trace_text=trace_text)
         
         if self._stop_event:
             return
         
         self.signal_progress.emit("Calling LLM...")
         result = self.llm_service.analyze_trace(
-            analysis_data['trace'],
+            trace_data,  # Pass full trace data
+            trace_text=trace_text,  # Pass raw text if available
             analysis_type=analysis_data['analysis_type']
         )
         

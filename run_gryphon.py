@@ -17,10 +17,10 @@ sys.path.insert(0, str(project_root))
 # Import gryphon_ai to ensure it's available when gui_manager imports it
 import gryphon_ai
 
-# Change to gryphon_source/python directory
-gryphon_python = project_root / "gryphon_source" / "python"
+# Change to gryphon_ai/gryphon_source/python directory
+gryphon_python = project_root / "gryphon_ai" / "gryphon_source" / "python"
 if not gryphon_python.exists():
-    print("ERROR: gryphon_source/python directory not found!")
+    print("ERROR: gryphon_ai/gryphon_source/python directory not found!")
     print("Please make sure Gryphon source is included in the repository.")
     sys.exit(1)
 

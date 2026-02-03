@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AboutMPDialog</class>
+ <widget class="QDialog" name="AboutMPDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>821</width>
+    <height>327</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>About Montery Phoenix - Gryphon</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background:white; border:0</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="widget_2" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>300</width>
+       <height>0</height>
+      </size>
+     </property>
+     <widget class="QWidget" name="widget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>300</width>
+        <height>300</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>117</horstretch>
+        <verstretch>28</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>300</height>
+       </size>
+      </property>
+      <widget class="QToolButton" name="mp_gryphon_tb">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>251</width>
+         <height>151</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>http://wiki.nps.edu/display/MP</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QToolTip{color:black}</string>
+       </property>
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/images/phoenix_logo</normaloff>:/images/phoenix_logo</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>600</width>
+         <height>150</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QToolButton" name="nps_tb">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>190</y>
+         <width>151</width>
+         <height>53</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>http://www.nps.edu</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QToolTip{color:black}</string>
+       </property>
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/images/nps_logo</normaloff>:/images/nps_logo</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>400</width>
+         <height>50</height>
+        </size>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QLabel" name="about_mp_label">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>20</y>
+        <width>471</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Monterey Phoenix (MP) Gryphon&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The Monterey Phoenix Gryphon GUI supports Monterey Phoenix users with an interface for creating MP schemas and generating trace graphs and other local and global views.&lt;/p&gt;&lt;p&gt;The Monterey Phoenix language and editor were developed at the &lt;a href=&quot;http://nps.edu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Naval Postgraduate School.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Resources:&lt;/span&gt;&lt;br/&gt;• &lt;a href=&quot;https://wiki.nps.edu/display/MP&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Monterey Phoenix website&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;• &lt;a href=&quot;https://wiki.nps.edu/display/MP/about&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Monterey Phoenix website About page&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

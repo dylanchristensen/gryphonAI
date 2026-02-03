@@ -55,10 +55,10 @@ Once running, use the **AI** menu in Gryphon:
 
 ## Project Structure
 
-- `gryphon_source/`: Gryphon source with AI integration already applied
-  - `python/`: Main Gryphon Python code
-  - `python/preloaded-examples/`: Example MP models and snippets (bundled with Gryphon)
-- `gryphon_ai/`: AI extension code
+- `gryphon_ai/`: AI extension and packaged Gryphon
+  - `gryphon_source/`: Gryphon source with AI integration applied
+    - `python/`: Main Gryphon Python code
+  - (other AI modules: `gryphon_ai_manager.py`, `llm_service.py`, etc.)
 - `config.json`: Your LLM configuration (create from `config.json.example`)
 
 ## Configuration
@@ -84,7 +84,7 @@ All done automatically - just run it!
 
 ## License
 
-[Include Gryphon's license - check gryphon_source/COPYING.md]
+[Include Gryphon's license - check gryphon_ai/gryphon_source/COPYING.md]
 
 ## Credits
 

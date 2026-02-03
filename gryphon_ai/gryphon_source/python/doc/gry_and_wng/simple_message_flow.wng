@@ -1,0 +1,223 @@
+{
+  "entities": {
+    "traces": {
+      "a672de7d-b951-4dae-a2e5-5227286beb06": {
+        "guid": "a672de7d-b951-4dae-a2e5-5227286beb06",
+        "layout": "SEQUENCE",
+        "marked": false,
+        "nodes": [
+          "09bf2659-8505-459b-bb9b-53bd2f2fa768",
+          "e01cecad-2b50-4e55-9ba9-9b6f806f0f41"
+        ],
+        "probability": 0.5,
+        "links": [],
+        "order": 1
+      },
+      "c027a012-f7b5-410c-8927-55c3ec64ca97": {
+        "guid": "c027a012-f7b5-410c-8927-55c3ec64ca97",
+        "layout": "SEQUENCE",
+        "marked": false,
+        "nodes": [
+          "b52bd01d-b78b-4e33-8e3d-9d5f6e337ee5",
+          "11abd69f-0678-40e0-bef6-50c0f85307a4",
+          "8b9edf40-84be-4774-8a31-fbf0beff9903",
+          "18e3a170-4971-466a-9dca-fd05afee735b"
+        ],
+        "probability": 0.5,
+        "links": [
+          "4aac958f-ec4e-4a8d-b8b9-b5d150f72c0f",
+          "66dbc464-f51c-4a8c-aefb-8d9533c5efa3",
+          "77ce9caf-364a-4446-8cba-bdf6172d82c1"
+        ],
+        "order": 2
+      }
+    },
+    "nodes": {
+      "09bf2659-8505-459b-bb9b-53bd2f2fa768": {
+        "guid": "09bf2659-8505-459b-bb9b-53bd2f2fa768",
+        "x": 40,
+        "y": 0,
+        "row": 0,
+        "column": 0,
+        "name": "Sender",
+        "originalWidth": null,
+        "originalHeight": null,
+        "originalX": null,
+        "originalY": null,
+        "isGroup": false,
+        "isView": false,
+        "type": "ROOT",
+        "hidden": false,
+        "collapsed": false,
+        "hasCollapsedParent": false,
+        "spansRows": false
+      },
+      "e01cecad-2b50-4e55-9ba9-9b6f806f0f41": {
+        "guid": "e01cecad-2b50-4e55-9ba9-9b6f806f0f41",
+        "x": 340,
+        "y": 0,
+        "row": 0,
+        "column": 1,
+        "name": "Receiver",
+        "originalWidth": null,
+        "originalHeight": null,
+        "originalX": null,
+        "originalY": null,
+        "isGroup": false,
+        "isView": false,
+        "type": "ROOT",
+        "hidden": false,
+        "collapsed": false,
+        "hasCollapsedParent": false,
+        "spansRows": false
+      },
+      "b52bd01d-b78b-4e33-8e3d-9d5f6e337ee5": {
+        "guid": "b52bd01d-b78b-4e33-8e3d-9d5f6e337ee5",
+        "x": 40,
+        "y": 0,
+        "row": 0,
+        "column": 0,
+        "name": "Sender",
+        "originalWidth": null,
+        "originalHeight": null,
+        "originalX": null,
+        "originalY": null,
+        "isGroup": false,
+        "isView": false,
+        "type": "ROOT",
+        "hidden": false,
+        "collapsed": false,
+        "hasCollapsedParent": false,
+        "spansRows": false
+      },
+      "11abd69f-0678-40e0-bef6-50c0f85307a4": {
+        "guid": "11abd69f-0678-40e0-bef6-50c0f85307a4",
+        "x": 40,
+        "y": 58.75126749915397,
+        "row": 1,
+        "column": 0,
+        "name": "send",
+        "originalWidth": null,
+        "originalHeight": null,
+        "originalX": null,
+        "originalY": null,
+        "isGroup": false,
+        "isView": false,
+        "type": "ATOM",
+        "hidden": false,
+        "collapsed": false,
+        "hasCollapsedParent": false,
+        "spansRows": false
+      },
+      "8b9edf40-84be-4774-8a31-fbf0beff9903": {
+        "guid": "8b9edf40-84be-4774-8a31-fbf0beff9903",
+        "x": 340,
+        "y": 0,
+        "row": 0,
+        "column": 1,
+        "name": "Receiver",
+        "originalWidth": null,
+        "originalHeight": null,
+        "originalX": null,
+        "originalY": null,
+        "isGroup": false,
+        "isView": false,
+        "type": "ROOT",
+        "hidden": false,
+        "collapsed": false,
+        "hasCollapsedParent": false,
+        "spansRows": false
+      },
+      "18e3a170-4971-466a-9dca-fd05afee735b": {
+        "guid": "18e3a170-4971-466a-9dca-fd05afee735b",
+        "x": 340,
+        "y": 58.75126749915397,
+        "row": 1,
+        "column": 1,
+        "name": "receive",
+        "originalWidth": null,
+        "originalHeight": null,
+        "originalX": null,
+        "originalY": null,
+        "isGroup": false,
+        "isView": false,
+        "type": "ATOM",
+        "hidden": false,
+        "collapsed": false,
+        "hasCollapsedParent": false,
+        "spansRows": false
+      }
+    },
+    "links": {
+      "4aac958f-ec4e-4a8d-b8b9-b5d150f72c0f": {
+        "guid": "4aac958f-ec4e-4a8d-b8b9-b5d150f72c0f",
+        "points": [],
+        "curviness": 0,
+        "source": "b52bd01d-b78b-4e33-8e3d-9d5f6e337ee5",
+        "target": "11abd69f-0678-40e0-bef6-50c0f85307a4",
+        "type": "IN"
+      },
+      "66dbc464-f51c-4a8c-aefb-8d9533c5efa3": {
+        "guid": "66dbc464-f51c-4a8c-aefb-8d9533c5efa3",
+        "points": [],
+        "curviness": 0,
+        "source": "8b9edf40-84be-4774-8a31-fbf0beff9903",
+        "target": "18e3a170-4971-466a-9dca-fd05afee735b",
+        "type": "IN"
+      },
+      "77ce9caf-364a-4446-8cba-bdf6172d82c1": {
+        "guid": "77ce9caf-364a-4446-8cba-bdf6172d82c1",
+        "points": [],
+        "curviness": 0,
+        "source": "11abd69f-0678-40e0-bef6-50c0f85307a4",
+        "target": "18e3a170-4971-466a-9dca-fd05afee735b",
+        "type": "FOLLOWS"
+      }
+    }
+  },
+  "currentTraceGuid": "a672de7d-b951-4dae-a2e5-5227286beb06",
+  "code": {
+    "title": "simple_message_flow",
+    "source": "/* \nExample1_simple_message_flow.mp\n\t \nEvent grammar rules for each root define derivations for event traces,\nin this case a simple sequence of zero or more events for each root.\n\nThe COORDINATE composition takes two root traces and produces \na modified event trace, merging behaviors of Sender and Receiver \nand adding the PRECEDES relation for the selected send/receive pairs.\nThe coordination operation behaves as a \"cross-cutting\" derivation rule.\n\nRun for scopes 1 and up. The \"Sequence\" or \"Swim Lanes\" layouts are \nthe most appropriate for browsing traces here.\n\n*/\n\nSCHEMA simple_message_flow\n\nROOT Sender:   (* send *);\nROOT Receiver: (* receive *);\n\nCOORDINATE\t$x: send \tFROM Sender, \n\t\t\t$y: receive FROM Receiver\n\tDO ADD $x PRECEDES $y; OD;\n"
+  },
+  "sort": {
+    "marked": {
+      "current": false
+    },
+    "events": {
+      "current": "",
+      "options": [
+        "",
+        "Asc",
+        "Desc"
+      ]
+    },
+    "probability": {
+      "current": "",
+      "options": [
+        "",
+        "Lowest",
+        "Highest"
+      ]
+    },
+    "sorting": false
+  },
+  "batchExport": {
+    "exporting": false,
+    "zip": null,
+    "markedOnly": false,
+    "error": false
+  },
+  "pagination": {
+    "currentPage": 1,
+    "totalPages": 1,
+    "pages": {
+      "1": [
+        "a672de7d-b951-4dae-a2e5-5227286beb06",
+        "c027a012-f7b5-410c-8927-55c3ec64ca97"
+      ]
+    },
+    "tracesPerPage": 20
+  },
+  "version": 3
+}

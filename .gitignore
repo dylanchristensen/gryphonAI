@@ -26,6 +26,6 @@ config.json
 Thumbs.db
 Desktop.ini
 
-# Old files
-old bullshit/
-MP Gryphon.zip
+# Reference clone (NPS Gryphon upstream, not committed)
+mp_gryphon_original/
+

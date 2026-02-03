@@ -1,0 +1,31 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="icons">
+        <file alias="mp_logo">icons/MP-logo-small-blue.png</file>
+        <file alias="exit">icons/application-exit.png</file>
+        <file alias="help">icons/help-contents-5.png</file>
+        <file alias="about_mp">icons/document-properties.png</file>
+        <file alias="run">icons/run-build-install.png</file>
+        <file alias="cancel">icons/dialog-cancel-3.png</file>
+        <file alias="clear_log">icons/edit-clear-list.png</file>
+        <file alias="open">icons/document-open-2.png</file>
+        <file alias="close">icons/document-close.png</file>
+        <file alias="save">icons/document-save-2.png</file>
+        <file alias="import_gry">icons/document-import-2.png</file>
+        <file alias="export_gry">icons/document-export-4.png</file>
+        <file alias="event_menu">icons/Events_icon.png</file>
+        <file alias="sort_ascending">icons/go-down-3.png</file>
+        <file alias="sort_descending">icons/go-up-3.png</file>
+        <file alias="filter">icons/view-filter.png</file>
+        <file alias="find_and_replace">icons/edit-find-and-replace-2.png</file>
+        <file alias="search_mp_files">icons/edit-find-5.png</file>
+        <file alias="left_arrow">icons/arrow-left-2.png</file>
+        <file alias="right_arrow">icons/arrow-right-2.png</file>
+        <file alias="zoom_in">icons/list-add-3.png</file>
+        <file alias="zoom_out">icons/list-remove-3.png</file>
+    </qresource>
+    <qresource prefix="images">
+        <file alias="phoenix_logo">images/phoenix_logo_color-01nps_cropped.jpg</file>
+        <file alias="nps_logo">images/nps_logo_hz.jpg</file>
+    </qresource>
+</RCC>

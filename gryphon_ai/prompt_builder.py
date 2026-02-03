@@ -101,7 +101,7 @@ class PromptBuilder:
         else:
             trace_str = json.dumps(trace_data, indent=2)
         
-        max_length = 10000
+        max_length = 100000
         if len(trace_str) > max_length:
             trace_str = trace_str[:max_length] + "\n... (truncated for length)"
         

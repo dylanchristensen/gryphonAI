@@ -1,0 +1,124 @@
+{
+    "graphs": [
+        {
+            "edges": [],
+            "mark": "M",
+            "nodes": [],
+            "probability": 1.0,
+            "views": []
+        },
+        {
+            "edges": [],
+            "mark": "U",
+            "nodes": [
+                {
+                    "collapse": false,
+                    "collapse_below": false,
+                    "hide": false,
+                    "id": "1",
+                    "label": "Sender",
+                    "type": "R",
+                    "x": 63.5,
+                    "y": 5.0
+                },
+                {
+                    "collapse": false,
+                    "collapse_below": false,
+                    "hide": false,
+                    "id": "2",
+                    "label": "Receiver",
+                    "type": "R",
+                    "x": 228.5,
+                    "y": 5.0
+                }
+            ],
+            "probability": 0.5,
+            "views": []
+        },
+        {
+            "edges": [
+                {
+                    "cbp1_x": 63.5,
+                    "cbp1_y": 23.333333333333332,
+                    "cbp2_x": 63.5,
+                    "cbp2_y": 41.666666666666664,
+                    "label": "",
+                    "relation": "IN",
+                    "source": "1",
+                    "target": "2"
+                },
+                {
+                    "cbp1_x": 228.5,
+                    "cbp1_y": 23.333333333333332,
+                    "cbp2_x": 228.5,
+                    "cbp2_y": 41.666666666666664,
+                    "label": "",
+                    "relation": "IN",
+                    "source": "3",
+                    "target": "4"
+                },
+                {
+                    "cbp1_x": 118.5,
+                    "cbp1_y": 60.0,
+                    "cbp2_x": 173.5,
+                    "cbp2_y": 60.0,
+                    "label": "",
+                    "relation": "FOLLOWS",
+                    "source": "2",
+                    "target": "4"
+                }
+            ],
+            "mark": "U",
+            "nodes": [
+                {
+                    "collapse": false,
+                    "collapse_below": false,
+                    "hide": false,
+                    "id": "1",
+                    "label": "Sender",
+                    "type": "R",
+                    "x": 63.5,
+                    "y": 5.0
+                },
+                {
+                    "collapse": false,
+                    "collapse_below": false,
+                    "hide": false,
+                    "id": "2",
+                    "label": "send",
+                    "type": "A",
+                    "x": 63.5,
+                    "y": 60.0
+                },
+                {
+                    "collapse": false,
+                    "collapse_below": false,
+                    "hide": false,
+                    "id": "3",
+                    "label": "Receiver",
+                    "type": "R",
+                    "x": 228.5,
+                    "y": 5.0
+                },
+                {
+                    "collapse": false,
+                    "collapse_below": false,
+                    "hide": false,
+                    "id": "4",
+                    "label": "receive",
+                    "type": "A",
+                    "x": 228.5,
+                    "y": 60.0
+                }
+            ],
+            "probability": 0.5,
+            "views": []
+        }
+    ],
+    "mp_code": "/* \nExample1_simple_message_flow.mp\n\t \nEvent grammar rules for each root define derivations for event traces,\nin this case a simple sequence of zero or more events for each root.\n\nThe COORDINATE composition takes two root traces and produces \na modified event trace, merging behaviors of Sender and Receiver \nand adding the PRECEDES relation for the selected send/receive pairs.\nThe coordination operation behaves as a \"cross-cutting\" derivation rule.\n\nRun for scopes 1 and up. The \"Sequence\" or \"Swim Lanes\" layouts are \nthe most appropriate for browsing traces here.\n\n*/\n\nSCHEMA simple_message_flow\n\nROOT Sender:   (* send *);\nROOT Receiver: (* receive *);\n\nCOORDINATE\t$x: send \tFROM Sender, \n\t\t\t$y: receive FROM Receiver\n\tDO ADD $x PRECEDES $y; OD;\n",
+    "scale": 1.0,
+    "scope": 1,
+    "selected_index": 1,
+    "x_slider": 0,
+    "y_slider": 0
+}

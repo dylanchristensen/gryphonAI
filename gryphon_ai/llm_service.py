@@ -80,14 +80,11 @@ class LLMService:
             LLMAPIError: If the API call fails
         """
         try:
-            # Prepare trace data with text if available
+            # Extract and format trace data (uses structured extraction for compact format)
             from gryphon_ai.trace_analyzer import TraceAnalyzer
-            if trace_text:
-                prepared_trace = TraceAnalyzer.prepare_trace_for_analysis(trace_data, trace_text=trace_text)
-            else:
-                prepared_trace = TraceAnalyzer.prepare_trace_for_analysis(trace_data)
+            prepared_trace = TraceAnalyzer.prepare_trace_for_analysis(trace_data, trace_text=trace_text)
             
-            # Pass both the prepared trace text and original data
+            # Pass the prepared trace (now compact formatted)
             trace_data_for_prompt = {
                 'trace_text': prepared_trace,
                 'trace_data': trace_data

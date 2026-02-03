@@ -246,13 +246,27 @@ class GryphonAIManager(QObject):
             with open(model_file, 'w', encoding='utf-8') as f:
                 f.write(mp_code)
         
+        # Extract and save structured trace data
+        try:
+            from gryphon_ai.trace_analyzer import TraceAnalyzer
+            trace_set_summary = TraceAnalyzer.extract_trace_set_summary(tg_data)
+            extracted_file = trace_dir / "traces_extracted.json"
+            with open(extracted_file, 'w', encoding='utf-8') as f:
+                json.dump(trace_set_summary, f, indent=2)
+        except Exception as e:
+            log(f"Gryphon AI: Could not extract trace data: {e}")
+        
         # Save metadata
         metadata = {
             "schema": schema_name or "unknown",
             "scope": scope,
             "timestamp": timestamp,
             "num_traces": num_traces,
-            "has_global": "GLOBAL" in tg_data if tg_data else False
+            "has_global": "GLOBAL" in tg_data if tg_data else False,
+            "trace_file": "trace.tg",
+            "gry_file": "trace.gry",
+            "model_file": "model.mp",
+            "extracted_file": "traces_extracted.json"
         }
         metadata_file = trace_dir / "metadata.json"
         with open(metadata_file, 'w', encoding='utf-8') as f:

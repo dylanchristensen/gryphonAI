@@ -63,15 +63,13 @@ class PromptBuilder:
         
         Args:
             trace_data: The trace data to analyze (JSON-serializable)
-            analysis_type: Type of analysis ('exploratory' or 'methodology')
+            analysis_type: Type of analysis (only 'exploratory' is supported)
             
         Returns:
             Tuple of (system_prompt, user_prompt)
         """
         if analysis_type == "exploratory":
             return PromptBuilder._build_exploratory_analysis_prompt(trace_data)
-        elif analysis_type == "methodology":
-            return PromptBuilder._build_methodology_analysis_prompt(trace_data)
         else:
             raise ValueError(f"Unknown analysis type: {analysis_type}")
     
@@ -124,31 +122,6 @@ class PromptBuilder:
             "- The concrete event sequences observed\n"
             "- Why this indicates emergent behavior (arising from interactions, not explicit code)\n"
             "- How this pattern appears across the trace set (frequency, variations)"
-        )
-        
-        return system_prompt, user_prompt
-    
-    @staticmethod
-    def _build_methodology_analysis_prompt(trace_data: dict) -> tuple[str, str]:
-        """
-        Build prompt for methodology-based trace analysis.
-        
-        This is a placeholder for when the methodology is formalized.
-        """
-        # TODO: Implement when methodology is formalized
-        system_prompt = (
-            "You are an expert in Monterey Phoenix (MP) modeling and trace analysis. "
-            "Your task is to analyze event traces using a formal methodology for "
-            "identifying emergent behaviors."
-        )
-        
-        trace_str = json.dumps(trace_data, indent=2)
-        if len(trace_str) > 10000:
-            trace_str = trace_str[:10000] + "\n... (truncated for length)"
-        
-        user_prompt = (
-            f"Here is the trace data:\n\n{trace_str}\n\n"
-            "Analyze this trace using the formal methodology for emergent behavior detection."
         )
         
         return system_prompt, user_prompt

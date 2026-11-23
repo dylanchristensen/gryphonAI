@@ -71,7 +71,7 @@ class LLMService:
         Args:
             trace_data: The trace data to analyze
             trace_text: Optional raw text representation (preferred for LLM)
-            analysis_type: Type of analysis ('exploratory' or 'methodology')
+            analysis_type: Type of analysis (only 'exploratory' is supported)
             
         Returns:
             Dictionary with 'content' key containing LLM response, or 'error' key if failed

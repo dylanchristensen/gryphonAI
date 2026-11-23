@@ -290,39 +290,3 @@ class ExploratoryTraceAnalyzer(TraceAnalyzer):
             raise
         except Exception as e:
             raise TraceAnalysisError(f"Error preparing trace for analysis: {e}")
-
-
-class MethodologyTraceAnalyzer(TraceAnalyzer):
-    """
-    Methodology-based trace analyzer.
-    
-    Placeholder for when the formal methodology is implemented.
-    """
-    
-    def __init__(self, methodology_config: Optional[Dict[str, Any]] = None):
-        """
-        Initialize the methodology-based analyzer.
-        
-        Args:
-            methodology_config: Configuration for the methodology (when available)
-        """
-        self.methodology_config = methodology_config or {}
-    
-    def analyze(self, trace_data: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Analyze trace data using formal methodology.
-        
-        Args:
-            trace_data: Full trace data dictionary
-            
-        Returns:
-            Dictionary with analysis results
-            
-        Raises:
-            TraceAnalysisError: If methodology is not yet implemented
-        """
-        # TODO: Implement when methodology is formalized
-        raise TraceAnalysisError(
-            "Methodology-based analysis not yet implemented. "
-            "Use ExploratoryTraceAnalyzer for now."
-        )

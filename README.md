@@ -6,7 +6,7 @@ Enhanced version of [Gryphon](https://gitlab.nps.edu/monterey-phoenix/user-inter
 
 1. **Clone this repository:**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/dylanchristensen/gryphonAI.git
    cd gryphonAI
    ```
 
@@ -84,9 +84,11 @@ All done automatically - just run it!
 
 ## License
 
-[Include Gryphon's license - check gryphon_ai/gryphon_source/COPYING.md]
+Gryphon, included under `gryphon_ai/gryphon_source/`, is released by the Naval Postgraduate School as a work of the U.S. Government in the public domain; see `gryphon_ai/gryphon_source/COPYING.md` for the full notice.
+
+The license for the AI extension code in this repository is to be determined.
 
 ## Credits
 
 - Based on [Gryphon](https://gitlab.nps.edu/monterey-phoenix/user-interfaces/gryphon) by Monterey Phoenix
-- AI extension developed by [Your Name/Team]
+- AI extension developed by the NSA INSuRE+C team at UNC Charlotte
